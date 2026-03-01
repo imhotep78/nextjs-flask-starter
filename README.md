@@ -41,6 +41,48 @@ You can clone & create this repo with the following command
 npx create-next-app nextjs-flask --example "https://github.com/vercel/examples/tree/main/python/nextjs-flask"
 ```
 
+## Docker (Claw Bot Server)
+
+The project ships with Docker Compose support that runs the Next.js frontend, the Flask API, and a local [Ollama](https://ollama.com/) LLM server — no cloud token fees required.
+
+### Start all services
+
+```bash
+docker compose up --build
+```
+
+| Service | URL |
+|---------|-----|
+| Next.js frontend | http://localhost:3000 |
+| Flask API | http://localhost:5328 |
+| Ollama | http://localhost:11434 |
+
+### Pull a model into Ollama (first run)
+
+```bash
+docker compose exec ollama ollama pull llama3
+```
+
+### Claw Bot API endpoints
+
+**Crawl a URL** — fetches and extracts the plain text of any web page:
+
+```bash
+curl -X POST http://localhost:5328/api/bot/crawl \
+  -H 'Content-Type: application/json' \
+  -d '{"url": "https://example.com"}'
+```
+
+**Chat with the local LLM** — runs inference locally, zero token fees:
+
+```bash
+curl -X POST http://localhost:5328/api/bot/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"model": "llama3", "prompt": "Summarize this text: ..."}'
+```
+
+---
+
 ## Getting Started
 
 First, install the dependencies:
